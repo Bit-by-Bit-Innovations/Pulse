@@ -33,13 +33,18 @@
     @apply bg-background text-foreground antialiased;
     font-family: var(--font-lexend), ui-sans-serif, system-ui;
     min-height: 100vh;
-    background-image: radial-gradient(at 10% 10%, rgba(118, 142, 255, 0.08), transparent 55%),
-      radial-gradient(at 90% 30%, rgba(178, 190, 255, 0.15), transparent 60%);
+    background-image: radial-gradient(at 10% 10%, rgb(var(--color-accent) / 0.08), transparent 55%),
+      radial-gradient(at 90% 30%, rgb(var(--color-accent) / 0.15), transparent 60%);
     background-attachment: fixed;
   }
 
+  .dark body {
+    background-image: radial-gradient(at 12% 18%, rgb(var(--color-accent) / 0.16), transparent 55%),
+      radial-gradient(at 85% 22%, rgb(var(--color-accent) / 0.32), transparent 60%);
+  }
+
   ::selection {
-    background-color: rgba(118, 142, 255, 0.25);
+    background-color: rgb(var(--color-accent) / 0.25);
   }
 }
 

@@ -1,4 +1,8 @@
+"use client";
+
 import Link from "next/link";
+
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const navigation = [
   { label: "Overview", href: "#" },
@@ -34,11 +38,12 @@ export function Header(): JSX.Element {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <div className="hidden items-center gap-2 rounded-full bg-surface/70 px-4 py-2 text-xs font-medium text-muted shadow-subtle ring-1 ring-border/40 backdrop-blur-sm sm:flex">
             <span className="h-2 w-2 rounded-full bg-accent shadow-soft" />
             <span>Live preview</span>
           </div>
+          <ThemeToggle />
           <button className="inline-flex items-center justify-center rounded-full bg-surface px-4 py-2 text-sm font-semibold text-foreground shadow-subtle transition duration-200 hover:-translate-y-0.5 hover:shadow-soft">
             Get early access
           </button>
