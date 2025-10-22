@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+    --color-background: 244 247 252;
+    --color-foreground: 23 34 56;
+    --color-surface: 255 255 255;
+    --color-border: 214 226 236;
+    --color-muted: 198 206 219;
+    --color-muted-foreground: 118 130 153;
+    --color-accent: 118 142 255;
+  }
+
+  .dark {
+    color-scheme: dark;
+    --color-background: 15 17 26;
+    --color-foreground: 233 239 247;
+    --color-surface: 28 32 44;
+    --color-border: 64 73 94;
+    --color-muted: 80 92 118;
+    --color-muted-foreground: 149 167 196;
+    --color-accent: 135 162 255;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-lexend), ui-sans-serif, system-ui;
+    min-height: 100vh;
+    background-image: radial-gradient(at 10% 10%, rgba(118, 142, 255, 0.08), transparent 55%),
+      radial-gradient(at 90% 30%, rgba(178, 190, 255, 0.15), transparent 60%);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    background-color: rgba(118, 142, 255, 0.25);
+  }
+}
+
+@layer components {
+  .layout-shell {
+    @apply mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .surface-card {
+    @apply rounded-3xl bg-surface p-6 shadow-soft ring-1 ring-border/50 backdrop-blur-sm;
+  }
+
+  .surface-muted {
+    @apply rounded-3xl bg-surface/70 p-4 shadow-subtle ring-1 ring-border/40 backdrop-blur-sm;
+  }
+}
+
+@layer utilities {
+  .text-muted {
+    color: rgb(var(--color-muted-foreground) / 1);
+  }
+}
