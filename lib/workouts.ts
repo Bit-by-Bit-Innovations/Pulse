@@ -34,6 +34,18 @@ export interface Workout {
    */
   notes?: string;
   /**
+   * Number of sets completed during the workout.
+   */
+  sets?: number;
+  /**
+   * Repetitions performed per set.
+   */
+  reps?: number;
+  /**
+   * Optional weight used for the movement (expressed in the user's preferred unit).
+   */
+  weight?: number;
+  /**
    * Tags attached to the workout for filtering (e.g. ["outdoor", "gym"]).
    */
   tags?: string[];
