@@ -23,6 +23,21 @@ const NOOP_STORAGE: StateStorage = {
 const EMPTY_WORKOUTS: Workout[] = Object.freeze([] as Workout[]);
 const EMPTY_WEEKLY_STATS: WeeklyWorkoutStats[] = Object.freeze([] as WeeklyWorkoutStats[]);
 
+const createEmptyWeeklySummary = (): WeeklyWorkoutStats => {
+  const start = getWeekStart(new Date());
+  const end = getWeekEnd(start);
+  return {
+    weekStart: start.toISOString(),
+    weekEnd: end.toISOString(),
+    totalWorkouts: 0,
+    totalDurationMinutes: 0,
+    totalSets: 0,
+    totalReps: 0,
+  };
+};
+
+const EMPTY_WEEKLY_SUMMARY: WeeklyWorkoutStats = Object.freeze(createEmptyWeeklySummary());
+
 const isUuidSupported = () =>
   typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function';
 
@@ -76,6 +91,8 @@ const computeWeeklyStats = (workouts: Workout[]): WeeklyWorkoutStats[] => {
       end: Date;
       totalWorkouts: number;
       totalDurationMinutes: number;
+      totalSets: number;
+      totalReps: number;
     }
   >();
 
@@ -92,6 +109,8 @@ const computeWeeklyStats = (workouts: Workout[]): WeeklyWorkoutStats[] => {
     if (existing) {
       existing.totalWorkouts += 1;
       existing.totalDurationMinutes += workout.durationMinutes ?? 0;
+      existing.totalSets += workout.totalSets ?? 0;
+      existing.totalReps += workout.totalReps ?? 0;
       return;
     }
 
@@ -100,6 +119,8 @@ const computeWeeklyStats = (workouts: Workout[]): WeeklyWorkoutStats[] => {
       end: getWeekEnd(startOfWeek),
       totalWorkouts: 1,
       totalDurationMinutes: workout.durationMinutes ?? 0,
+      totalSets: workout.totalSets ?? 0,
+      totalReps: workout.totalReps ?? 0,
     });
   });
 
@@ -110,6 +131,8 @@ const computeWeeklyStats = (workouts: Workout[]): WeeklyWorkoutStats[] => {
       weekEnd: summary.end.toISOString(),
       totalWorkouts: summary.totalWorkouts,
       totalDurationMinutes: summary.totalDurationMinutes,
+      totalSets: summary.totalSets,
+      totalReps: summary.totalReps,
     }));
 };
 
@@ -123,6 +146,39 @@ const createSelectRecentWorkoutsInternal = (limit: number) => (state: WorkoutsSt
 
 const selectWeeklyStatsInternal = (state: WorkoutsStore) =>
   computeWeeklyStats(state.workouts);
+
+const selectCurrentWeekStatsInternal = (state: WorkoutsStore): WeeklyWorkoutStats => {
+  const now = new Date();
+  const start = getWeekStart(now);
+  const end = getWeekEnd(start);
+  const startTime = start.getTime();
+  const endTime = end.getTime();
+
+  const summary: WeeklyWorkoutStats = {
+    weekStart: start.toISOString(),
+    weekEnd: end.toISOString(),
+    totalWorkouts: 0,
+    totalDurationMinutes: 0,
+    totalSets: 0,
+    totalReps: 0,
+  };
+
+  state.workouts.forEach((workout) => {
+    const performedAt = new Date(workout.performedAt);
+    const timestamp = performedAt.getTime();
+
+    if (Number.isNaN(timestamp) || timestamp < startTime || timestamp > endTime) {
+      return;
+    }
+
+    summary.totalWorkouts += 1;
+    summary.totalDurationMinutes += workout.durationMinutes ?? 0;
+    summary.totalSets += workout.totalSets ?? 0;
+    summary.totalReps += workout.totalReps ?? 0;
+  });
+
+  return summary;
+};
 
 export const useWorkoutsStore = create<WorkoutsStore>()(
   persist(
@@ -189,6 +245,9 @@ export const useRecentWorkouts = (limit = 5) =>
 export const useWeeklyWorkoutStats = () =>
   useHydratedSelector(selectWeeklyStatsInternal, EMPTY_WEEKLY_STATS);
 
+export const useCurrentWeekWorkoutStats = () =>
+  useHydratedSelector(selectCurrentWeekStatsInternal, EMPTY_WEEKLY_SUMMARY);
+
 export const useAddWorkout = () => useWorkoutsStore((state) => state.addWorkout);
 
 export const useRemoveWorkout = () => useWorkoutsStore((state) => state.removeWorkout);
@@ -196,3 +255,4 @@ export const useRemoveWorkout = () => useWorkoutsStore((state) => state.removeWo
 export const selectSortedWorkouts = selectSortedWorkoutsInternal;
 export const createSelectRecentWorkouts = createSelectRecentWorkoutsInternal;
 export const selectWeeklyWorkoutStats = selectWeeklyStatsInternal;
+export const selectCurrentWeekWorkoutStats = selectCurrentWeekStatsInternal;
