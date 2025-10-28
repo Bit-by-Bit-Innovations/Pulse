@@ -22,6 +22,14 @@ export interface Workout {
    */
   intensity?: WorkoutIntensity;
   /**
+   * Total number of sets completed during the workout.
+   */
+  totalSets?: number;
+  /**
+   * Cumulative repetitions performed across all sets in the workout.
+   */
+  totalReps?: number;
+  /**
    * Free-form notes about the workout.
    */
   notes?: string;
@@ -50,6 +58,14 @@ export interface WeeklyWorkoutStats {
    * Aggregate duration of the week's workouts in minutes (if provided).
    */
   totalDurationMinutes: number;
+  /**
+   * Total sets recorded across workouts in the week.
+   */
+  totalSets: number;
+  /**
+   * Total repetitions recorded across workouts in the week.
+   */
+  totalReps: number;
 }
 
 export type WorkoutSelector<T> = (workouts: Workout[]) => T;
