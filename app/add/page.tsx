@@ -144,7 +144,7 @@ export default function AddWorkoutPage(): JSX.Element {
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35, ease: "easeOut" }}
+        transition={{ duration: 0.35 }}
         className="space-y-8"
       >
         <div className="rounded-3xl bg-surface/70 p-5 text-sm text-muted shadow-subtle ring-1 ring-border/40">
@@ -305,7 +305,7 @@ export default function AddWorkoutPage(): JSX.Element {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
+              transition={{ duration: 0.3 }}
               className="rounded-3xl bg-accent/15 p-5 text-foreground shadow-subtle ring-1 ring-accent/30"
               role="status"
               aria-live="polite"

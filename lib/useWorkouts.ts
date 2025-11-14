@@ -20,23 +20,8 @@ const NOOP_STORAGE: StateStorage = {
   removeItem: () => undefined,
 };
 
-const EMPTY_WORKOUTS: Workout[] = Object.freeze([] as Workout[]);
-const EMPTY_WEEKLY_STATS: WeeklyWorkoutStats[] = Object.freeze([] as WeeklyWorkoutStats[]);
-
-const createEmptyWeeklySummary = (): WeeklyWorkoutStats => {
-  const start = getWeekStart(new Date());
-  const end = getWeekEnd(start);
-  return {
-    weekStart: start.toISOString(),
-    weekEnd: end.toISOString(),
-    totalWorkouts: 0,
-    totalDurationMinutes: 0,
-    totalSets: 0,
-    totalReps: 0,
-  };
-};
-
-const EMPTY_WEEKLY_SUMMARY: WeeklyWorkoutStats = Object.freeze(createEmptyWeeklySummary());
+const EMPTY_WORKOUTS = Object.freeze([] as Workout[]) as Workout[];
+const EMPTY_WEEKLY_STATS = Object.freeze([] as WeeklyWorkoutStats[]) as WeeklyWorkoutStats[];
 
 const isUuidSupported = () =>
   typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function';
@@ -74,10 +59,25 @@ const getWeekEnd = (start: Date): Date => {
   return end;
 };
 
+const createEmptyWeeklySummary = (): WeeklyWorkoutStats => {
+  const start = getWeekStart(new Date());
+  const end = getWeekEnd(start);
+  return {
+    weekStart: start.toISOString(),
+    weekEnd: end.toISOString(),
+    totalWorkouts: 0,
+    totalDurationMinutes: 0,
+    totalSets: 0,
+    totalReps: 0,
+  };
+};
+
+const EMPTY_WEEKLY_SUMMARY = Object.freeze(createEmptyWeeklySummary()) as WeeklyWorkoutStats;
+
 const byPerformedAtDesc = (a: Workout, b: Workout) => {
   const first = new Date(a.performedAt).getTime();
   const second = new Date(b.performedAt).getTime();
-  return Number.isNaN(second) - Number.isNaN(first) || second - first;
+  return (Number(Number.isNaN(second)) - Number(Number.isNaN(first))) || second - first;
 };
 
 const sortWorkoutsDescending = (workouts: Workout[]): Workout[] =>

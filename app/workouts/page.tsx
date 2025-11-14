@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { useMemo } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, type Variants } from "framer-motion";
 
 import { Layout } from "@/components/Layout";
 import { useRemoveWorkout, useSortedWorkouts } from "@/lib/useWorkouts";
 import type { Workout } from "@/lib/workouts";
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
@@ -19,14 +19,13 @@ const containerVariants = {
   }
 };
 
-const sectionVariants = {
+const sectionVariants: Variants = {
   hidden: { opacity: 0, y: 16 },
   show: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.45,
-      ease: "easeOut"
+      duration: 0.45
     }
   }
 };
@@ -34,7 +33,7 @@ const sectionVariants = {
 const cardInitial = { opacity: 0, y: 12, scale: 0.98 };
 const cardAnimate = { opacity: 1, y: 0, scale: 1 };
 const cardExit = { opacity: 0, y: -12, scale: 0.96 };
-const cardTransition = { duration: 0.3, ease: "easeOut" };
+const cardTransition = { duration: 0.3 };
 
 const dateFormatter = new Intl.DateTimeFormat(undefined, {
   weekday: "long",
